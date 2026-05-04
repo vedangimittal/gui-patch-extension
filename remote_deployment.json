@@ -1,0 +1,7 @@
+{
+  "name": "remote_deployment",
+  "description": "Native messaging host for remote deployment",
+  "path": "/Users/vedangimittal/Documents/extension-new/native-host.py",
+  "type": "stdio",
+  "allowed_extensions": ["remote-deployment@example.com"]
+}

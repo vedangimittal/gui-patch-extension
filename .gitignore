@@ -1,0 +1,35 @@
+# Node modules
+node_modules/
+dist/
+
+# Build artifacts
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*~
+
+# Extension packaging
+*.xpi
+*.zip
+
+# Sensitive data
+*.pem
+*.key
+passwords.txt
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo

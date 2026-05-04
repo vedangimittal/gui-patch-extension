@@ -1,0 +1,27 @@
+{
+  "manifest_version": 2,
+  "name": "Remote Deployment Tool",
+  "version": "1.0.0",
+  "description": "Firefox extension to deploy builds to remote machines",
+  "applications": {
+    "gecko": {
+      "id": "remote-deployment@example.com"
+    }
+  },
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+  "sidebar_action": {
+    "default_icon": "icons/icon-48.png",
+    "default_title": "Remote Deployment",
+    "default_panel": "sidebar.html"
+  },
+  "permissions": [
+    "nativeMessaging",
+    "storage"
+  ],
+  "background": {
+    "scripts": ["background.js"]
+  }
+}
