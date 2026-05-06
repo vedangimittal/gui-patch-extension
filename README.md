@@ -16,21 +16,15 @@ A Firefox extension to deploy builds to remote machines directly from your brows
 
 ## Installation
 
-### Quick Setup
+Run the automatic setup script:
 
 ```bash
-# 1. Install sshpass
-brew install sshpass
-
-# 2. Run the setup script
-cd /Users/vedangimittal/Documents/extension-new
-chmod +x setup-native-host.sh
-./setup-native-host.sh
-
-# 3. Load extension in Firefox (about:debugging)
+./auto-setup.sh
 ```
 
-For detailed instructions, see [INSTALLATION.md](INSTALLATION.md).
+Then load the extension in Firefox (about:debugging).
+
+For manual setup options, see [INSTALLATION.md](INSTALLATION.md).
 
 
 ## Usage
