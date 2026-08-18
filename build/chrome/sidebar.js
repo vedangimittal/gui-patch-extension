@@ -1,4 +1,7 @@
 // Sidebar script for handling user interactions
+// Cross-browser compatibility: Use browser API (works in Firefox, Chrome, Edge)
+const browserAPI = (typeof chrome !== 'undefined' && chrome.runtime) ? chrome : browser;
+
 document.addEventListener('DOMContentLoaded', function() {
   const deployBtn = document.getElementById('deployBtn');
   const projectPathInput = document.getElementById('projectPath');
@@ -8,14 +11,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const outputContainer = document.getElementById('outputContainer');
   const outputDiv = document.getElementById('output');
 
-  // Load saved values if they exist
-  browser.storage.local.get(['lastRemoteIp', 'lastProjectPath']).then(result => {
-    if (result.lastRemoteIp) {
-      remoteIpInput.value = result.lastRemoteIp;
-    }
-    if (result.lastProjectPath) {
-      projectPathInput.value = result.lastProjectPath;
-    }
+  // Load saved values
+  browserAPI.storage.local.get(['lastRemoteIp', 'lastProjectPath']).then(result => {
+    if (result.lastRemoteIp) remoteIpInput.value = result.lastRemoteIp;
+    if (result.lastProjectPath) projectPathInput.value = result.lastProjectPath;
+  }).catch(error => {
+    console.error('Error loading saved values:', error);
   });
 
   deployBtn.addEventListener('click', function() {
@@ -28,54 +29,52 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    // Save the values for next time
-    browser.storage.local.set({
-      lastRemoteIp: remoteIp,
-      lastProjectPath: projectPath
-    });
+    // Save values for next time
+    browserAPI.storage.local.set({ lastRemoteIp: remoteIp, lastProjectPath: projectPath });
 
     // Disable button and show processing status
     deployBtn.disabled = true;
     deployBtn.innerHTML = '<span class="spinner"></span><span>Deploying...</span>';
     showStatus('🚀 Starting deployment...', 'info');
-    
+
     // Clear and show output container
     outputDiv.textContent = '';
     outputContainer.classList.add('visible');
 
     // Send message to background script
-    browser.runtime.sendMessage({
-      action: 'deploy',
-      projectPath: projectPath,
-      remoteIp: remoteIp,
-      password: password
-    }).then(response => {
-      deployBtn.disabled = false;
-      deployBtn.innerHTML = '<span>Deploy Build</span>';
-      
-      if (response.success) {
-        showStatus('✅ Deployment completed successfully!', 'success');
-        // Clear password for security
-        passwordInput.value = '';
-        
-        // Add to output
-        appendOutput('\n✅ Deployment completed successfully!');
-      } else {
-        showStatus('❌ Deployment failed: ' + response.error, 'error');
-        appendOutput('\n❌ Error: ' + response.error);
-      }
-    }).catch(error => {
+    try {
+      browserAPI.runtime.sendMessage({
+        action: 'deploy',
+        projectPath: projectPath,
+        remoteIp: remoteIp,
+        password: password
+      }).catch(() => {
+        // Firefox does not resolve this Promise when background uses return true
+        // Final result is delivered via deployment-complete message instead
+      });
+    } catch (error) {
       deployBtn.disabled = false;
       deployBtn.innerHTML = '<span>Deploy Build</span>';
       showStatus('❌ Error: ' + error.message, 'error');
       appendOutput('\n❌ Error: ' + error.message);
-    });
+    }
   });
 
-  // Listen for output messages from background script
-  browser.runtime.onMessage.addListener((message) => {
+  // Listen for output and completion messages from background script
+  browserAPI.runtime.onMessage.addListener((message) => {
     if (message.type === 'deployment-output') {
       appendOutput(message.data);
+    } else if (message.type === 'deployment-complete') {
+      deployBtn.disabled = false;
+      deployBtn.innerHTML = '<span>Deploy Build</span>';
+      if (message.success) {
+        showStatus('✅ Deployment completed successfully!', 'success');
+        passwordInput.value = '';
+      } else {
+        const errorMsg = message.error || 'Unknown error';
+        showStatus('❌ Deployment failed: ' + errorMsg, 'error');
+        appendOutput('\n❌ Error: ' + errorMsg);
+      }
     }
   });
 
@@ -83,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
     statusDiv.textContent = message;
     statusDiv.className = type;
     statusDiv.style.display = 'block';
-    
+
     // Auto-hide info messages after 5 seconds
     if (type === 'info') {
       setTimeout(() => {
@@ -94,26 +93,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function appendOutput(text) {
     outputDiv.textContent += text + '\n';
-    // Auto-scroll to bottom
     outputDiv.scrollTop = outputDiv.scrollHeight;
   }
 
-  // Allow Enter key to submit and navigate between fields
+  // Enter key navigation
   projectPathInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      remoteIpInput.focus();
-    }
+    if (e.key === 'Enter') remoteIpInput.focus();
   });
 
   remoteIpInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      passwordInput.focus();
-    }
+    if (e.key === 'Enter') passwordInput.focus();
   });
 
   passwordInput.addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      deployBtn.click();
-    }
+    if (e.key === 'Enter') deployBtn.click();
   });
 });

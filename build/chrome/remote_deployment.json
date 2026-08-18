@@ -1,0 +1,7 @@
+{
+  "name": "remote_deployment",
+  "description": "Native messaging host for remote deployment",
+  "path": "/path/to/extension/native-host.py",
+  "type": "stdio",
+  "allowed_origins": ["chrome-extension://EXTENSION_ID_PLACEHOLDER/"]
+}

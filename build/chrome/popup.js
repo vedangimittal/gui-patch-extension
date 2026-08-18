@@ -1,4 +1,7 @@
 // Popup script for handling user interactions
+// Cross-browser compatibility: Use browser API (works in Firefox, Chrome, Edge)
+const browserAPI = (typeof chrome !== 'undefined' && chrome.runtime) ? chrome : browser;
+
 document.addEventListener('DOMContentLoaded', function() {
   const deployBtn = document.getElementById('deployBtn');
   const remoteIpInput = document.getElementById('remoteIp');
@@ -6,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const statusDiv = document.getElementById('status');
 
   // Load saved IP if exists
-  browser.storage.local.get('lastRemoteIp').then(result => {
+  browserAPI.storage.local.get('lastRemoteIp').then(result => {
     if (result.lastRemoteIp) {
       remoteIpInput.value = result.lastRemoteIp;
     }
@@ -22,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Save the IP for next time
-    browser.storage.local.set({ lastRemoteIp: remoteIp });
+    browserAPI.storage.local.set({ lastRemoteIp: remoteIp });
 
     // Disable button and show processing status
     deployBtn.disabled = true;
@@ -30,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function() {
     showStatus('Starting deployment...', 'info');
 
     // Send message to background script
-    browser.runtime.sendMessage({
+    browserAPI.runtime.sendMessage({
       action: 'deploy',
       remoteIp: remoteIp,
       password: password
