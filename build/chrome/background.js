@@ -5,6 +5,9 @@ const browserAPI = (typeof chrome !== 'undefined' && chrome.runtime) ? chrome : 
 
 console.log('[Background] Script loaded successfully');
 
+// Open side panel by default when the extension icon is clicked
+chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true }).catch(() => {});
+
 let port = null;
 
 // Listen for messages from popup/sidebar
