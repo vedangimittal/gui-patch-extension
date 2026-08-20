@@ -16,8 +16,6 @@ Clone the repo into one of the recommended locations below and move into the fol
 > | **Linux** | `~/projects/extension` or any path under `$HOME` on a local filesystem |
 > | **Windows** | `C:\Users\<you>\Projects\extension` on a local (non-OneDrive) drive |
 
-Then follow the setup steps for your browser below.
-
 ---
 
 ## What it does
@@ -28,17 +26,43 @@ Enter your project path, remote IP, and password in the sidebar, click **Deploy 
 
 ## Setup
 
-### Firefox
-- **macOS / Linux:** run `chmod +x auto-setup-firefox.sh && ./auto-setup-firefox.sh`
-- **Windows:** open PowerShell and run `.\auto-setup-firefox.ps1`
+Run a single script — it auto-detects which browsers you have installed and sets up both.
 
-See [FIREFOX-SETUP.md](FIREFOX-SETUP.md) for full instructions.
+### macOS / Linux
 
-### Chrome / Edge
-- **macOS / Linux:** run `chmod +x auto-setup-chrome.sh && ./auto-setup-chrome.sh`
-- **Windows:** open PowerShell and run `.\auto-setup-chrome.ps1`
+```bash
+bash setup.sh
+```
 
-See [CHROME-SETUP.md](CHROME-SETUP.md) for full instructions.
+### Windows
+
+```powershell
+.\setup.ps1
+```
+
+> If you see a script execution error, run this first:
+> ```powershell
+> Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+> ```
+
+The script will:
+- Install `sshpass` and verify Python 3
+- Register the native messaging host for Chrome/Edge and/or Firefox
+- **Firefox:** automatically open the `.xpi` install prompt — just click **Add**
+- **Chrome/Edge:** prompt you to paste the Extension ID (see [CHROME-SETUP.md](CHROME-SETUP.md))
+
+For detailed per-browser instructions see:
+- [CHROME-SETUP.md](CHROME-SETUP.md)
+- [FIREFOX-SETUP.md](FIREFOX-SETUP.md)
+
+---
+
+## Extension files
+
+| Browser | File |
+|---|---|
+| Chrome / Edge | `build/chrome/chrome-extension.zip` |
+| Firefox | `build/firefox/extension.xpi` |
 
 ---
 

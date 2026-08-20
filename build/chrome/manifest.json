@@ -2,6 +2,7 @@
   "manifest_version": 3,
   "name": "Remote Deployment Tool",
   "version": "1.0.0",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoO/r1s33jMmedYe0LhOaMJjc5PB9k2OZkIyNTCpwkSe4+SLRPibJk9CQj9lWb8zlvirAyl9T4sST5K1hQ8AqbcUqUkBDkU1nudEd7AzZ998A1pyFmF07ayijnwN7CH7WmXNZd0xTifAS3nNwDMqK0iu/P6lIZKko5jnJQBm9ymIo9MXvaAoaK4v4qdNf6aOAy9uMBiCxf3/SBawsCCRYei9Loq2TJhDw76TF0xU0+V24IBO3WPWmMvNIVecEKTWdcLKksecn6/Ks9rNhUCb0WAdVlk8BWdLLwi8emdnA4gbp0WyCWTs5tCpFxPAxqjSVJntPDRnXcaDGRzPlSLPShwIDAQAB",
   "description": "Chrome/Edge extension to deploy builds to remote machines",
   "icons": {
     "48": "icons/icon-48.png",

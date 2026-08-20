@@ -17,7 +17,7 @@
 Open a terminal in the extension folder and run:
 
 ```bash
-chmod +x auto-setup-firefox.sh && ./auto-setup-firefox.sh
+bash setup.sh
 ```
 
 The script will automatically:
@@ -25,20 +25,15 @@ The script will automatically:
 - Check that Python 3 is installed
 - Make `native-host.py` executable
 - Create the native messaging manifest so Firefox can talk to the extension
+- **Open Firefox and prompt you to install the extension** — click **Add** to confirm
 
-### Step 2 — Load the extension in Firefox
-
-1. Open Firefox and go to `about:debugging#/runtime/this-firefox`
-2. Click **"Load Temporary Add-on..."**
-3. Select any file inside the `build/firefox/` folder
-
-### Step 3 — Open the sidebar and deploy
+### Step 2 — Open the sidebar and deploy
 
 1. In Firefox, go to **View → Sidebar → Remote Deployment**
 2. Fill in your **project path**, **remote IP**, and **password**
 3. Click **Deploy Build**
 
-> **Note:** Temporary add-ons are removed when Firefox restarts — reload from `about:debugging` each time.
+That's it — the extension persists across Firefox restarts.
 
 ---
 
@@ -49,7 +44,7 @@ The script will automatically:
 Open **PowerShell** in the extension folder and run:
 
 ```powershell
-.\auto-setup-firefox.ps1
+.\setup.ps1
 ```
 
 > If you see a script execution error, run this first to allow local scripts:
@@ -61,14 +56,9 @@ The script will automatically:
 - Check that Python 3 is installed
 - Try to install `sshpass` via `winget`
 - Create the native messaging manifest so Firefox can talk to the extension
+- **Open Firefox and prompt you to install the extension** — click **Add** to confirm
 
-### Step 2 — Load the extension in Firefox
-
-1. Open Firefox and go to `about:debugging#/runtime/this-firefox`
-2. Click **"Load Temporary Add-on..."**
-3. Select any file inside the `build\firefox\` folder
-
-### Step 3 — Open the sidebar and deploy
+### Step 2 — Open the sidebar and deploy
 
 1. In Firefox, go to **View → Sidebar → Remote Deployment**
 2. Fill in your **project path**, **remote IP**, and **password**
@@ -76,11 +66,20 @@ The script will automatically:
 
 ---
 
+## Manual installation (if the script doesn't open Firefox automatically)
+
+1. Open Firefox and go to `about:addons`
+2. Click the gear icon → **Install Add-on From File**
+3. Select `build/firefox/extension.xpi`
+4. Click **Add** in the prompt
+
+---
+
 ## Common Problems
 
-**Extension disappears after restart** — Temporary add-ons don't survive browser restarts. Reload from `about:debugging`.
+**"No such native application"** — Re-run `bash setup.sh` (or `.\setup.ps1` on Windows). On Windows, double-check the path in `%APPDATA%\Mozilla\NativeMessagingHosts\remote_deployment.json`.
 
-**"No such native application"** — Re-run `./auto-setup-firefox.sh`. On Windows, double-check the path in `remote_deployment.json`.
+**Extension not visible in sidebar menu** — Go to **View → Sidebar** and check if **Remote Deployment** appears. If not, reinstall the `.xpi`.
 
 **"python3 not found"** — Install Python 3 and re-run the script.
 

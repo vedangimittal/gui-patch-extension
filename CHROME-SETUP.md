@@ -21,14 +21,17 @@ Chrome needs a unique ID before native messaging can be registered.
 1. Open Chrome and go to `chrome://extensions/`
 2. Turn on **Developer mode** (toggle in the top-right corner)
 3. Click **"Load unpacked"** → select the `build/chrome/` folder
-4. Find the **Remote Deployment** card and copy the **Extension ID** shown underneath it (a long string of letters like `abcdefghijklmnopqrstuvwxyz123456`)
+
+   > Alternatively, drag and drop `build/chrome/chrome-extension.zip` onto the `chrome://extensions/` page.
+
+4. Find the **Remote Deployment** card and copy the **Extension ID** shown underneath it (a long string like `abcdefghijklmnopqrstuvwxyz123456`)
 
 ### Step 2 — Run the setup script
 
 Open a terminal in the extension folder and run:
 
 ```bash
-chmod +x auto-setup-chrome.sh && ./auto-setup-chrome.sh
+bash setup.sh
 ```
 
 The script will automatically:
@@ -45,10 +48,9 @@ Close and reopen Chrome so it picks up the updated manifest.
 
 ### Step 4 — Open the side panel and deploy
 
-1. Click the **Remote Deployment** icon in the Chrome toolbar
-2. Click **"Open side panel"**
-3. Fill in your **project path**, **remote IP**, and **password**
-4. Click **Deploy Build**
+1. Click the **Remote Deployment** icon in the Chrome toolbar — the side panel opens automatically
+2. Fill in your **project path**, **remote IP**, and **password**
+3. Click **Deploy Build**
 
 ---
 
@@ -59,6 +61,9 @@ Close and reopen Chrome so it picks up the updated manifest.
 1. Open Chrome and go to `chrome://extensions/`
 2. Turn on **Developer mode** (toggle in the top-right corner)
 3. Click **"Load unpacked"** → select the `build\chrome\` folder
+
+   > Alternatively, drag and drop `build\chrome\chrome-extension.zip` onto the `chrome://extensions/` page.
+
 4. Copy the **Extension ID** shown on the extension card
 
 ### Step 2 — Run the setup script
@@ -66,7 +71,7 @@ Close and reopen Chrome so it picks up the updated manifest.
 Open **PowerShell** in the extension folder and run:
 
 ```powershell
-.\auto-setup-chrome.ps1
+.\setup.ps1
 ```
 
 > If you see a script execution error, run this first to allow local scripts:
@@ -87,18 +92,22 @@ Close and reopen Chrome so it picks up the updated manifest.
 
 ### Step 4 — Open the side panel and deploy
 
-1. Click the **Remote Deployment** icon in the Chrome toolbar
-2. Click **"Open side panel"**
-3. Fill in your **project path**, **remote IP**, and **password**
-4. Click **Deploy Build**
+1. Click the **Remote Deployment** icon in the Chrome toolbar — the side panel opens automatically
+2. Fill in your **project path**, **remote IP**, and **password**
+3. Click **Deploy Build**
 
 ---
 
 ## Common Problems
 
-**"Native messaging host not found"** — The Extension ID in the manifest is wrong or missing. Re-run `./auto-setup-chrome.sh` and paste the correct ID when prompted.
+**"Native messaging host not found"** — The Extension ID in the manifest is wrong or missing. Re-run `bash setup.sh` (or `.\setup.ps1` on Windows) and paste the correct ID when prompted.
 
-**Skipped the ID prompt** — Open the manifest file at `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/remote_deployment.json` (macOS) or `~/.config/google-chrome/NativeMessagingHosts/remote_deployment.json` (Linux) and replace `EXTENSION_ID_PLACEHOLDER` with your Extension ID.
+**Skipped the ID prompt** — Open the manifest file at:
+- macOS: `~/Library/Application Support/Google/Chrome/NativeMessagingHosts/remote_deployment.json`
+- Linux: `~/.config/google-chrome/NativeMessagingHosts/remote_deployment.json`
+- Windows: `%LOCALAPPDATA%\Google\Chrome\User Data\NativeMessagingHosts\remote_deployment.json`
+
+Replace `EXTENSION_ID_PLACEHOLDER` with your Extension ID.
 
 **Extension not in toolbar** — Click the puzzle-piece icon in Chrome and pin the extension.
 
