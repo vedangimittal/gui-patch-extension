@@ -4,7 +4,7 @@
 set -e
 
 EXTENSION_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-NATIVE_HOST_PATH="$EXTENSION_DIR/native-host.py"
+NATIVE_HOST_PATH="$EXTENSION_DIR/native-host-wrapper.sh"
 
 echo "🚀 Remote Deployment — Setup"
 echo ""
@@ -40,13 +40,15 @@ else
     exit 1
 fi
 
-# ── 3. Make native-host.py executable ────────────────────────────────────────
+# ── 3. Make scripts executable ───────────────────────────────────────────────
 if [ ! -f "$NATIVE_HOST_PATH" ]; then
-    echo "❌ Error: native-host.py not found at $NATIVE_HOST_PATH"
+    echo "❌ Error: native-host-wrapper.sh not found at $NATIVE_HOST_PATH"
     exit 1
 fi
-chmod +x "$NATIVE_HOST_PATH"
-echo "✅ native-host.py is executable"
+chmod 777 "$NATIVE_HOST_PATH"
+chmod 777 "$EXTENSION_DIR/native-host.py"
+chmod 777 "$EXTENSION_DIR/load-build.sh"
+echo "✅ native-host-wrapper.sh, native-host.py and load-build.sh are executable"
 
 # ── 4. Detect installed browsers ─────────────────────────────────────────────
 HAS_CHROME=false

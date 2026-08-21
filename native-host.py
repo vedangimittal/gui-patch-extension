@@ -69,25 +69,15 @@ def run_deployment(project_path, remote_ip, password):
             'data': f'Starting deployment to {remote_ip}...'
         })
         
-        # Change to project directory first
-        original_dir = os.getcwd()
-        try:
-            os.chdir(project_path)
-        except Exception as e:
-            send_message({
-                'type': 'error',
-                'message': f'Failed to change to project directory: {str(e)}'
-            })
-            return
-        
-        # Run the deployment script from the project directory
+        # Run the deployment script with project_path as working directory
         process = subprocess.Popen(
             [deploy_script, remote_ip, password],
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
             bufsize=1,
-            universal_newlines=True
+            universal_newlines=True,
+            cwd=project_path
         )
         
         # Stream output

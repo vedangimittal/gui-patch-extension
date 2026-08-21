@@ -4,7 +4,7 @@
 $ErrorActionPreference = "Stop"
 
 $EXTENSION_DIR = Split-Path -Parent $MyInvocation.MyCommand.Path
-$NATIVE_HOST_PATH = Join-Path $EXTENSION_DIR "native-host.py"
+$NATIVE_HOST_PATH = Join-Path $EXTENSION_DIR "native-host-wrapper.sh"
 
 Write-Host "Remote Deployment - Setup" -ForegroundColor Cyan
 Write-Host ""
@@ -41,10 +41,17 @@ if (Get-Command sshpass -ErrorAction SilentlyContinue) {
 
 # ── 3. Check native-host.py exists ────────────────────────────────────────────
 if (-not (Test-Path $NATIVE_HOST_PATH)) {
-    Write-Host "ERROR  native-host.py not found at: $NATIVE_HOST_PATH" -ForegroundColor Red
+    Write-Host "ERROR  native-host-wrapper.sh not found at: $NATIVE_HOST_PATH" -ForegroundColor Red
     exit 1
 }
-Write-Host "OK  native-host.py found" -ForegroundColor Green
+Write-Host "OK  native-host-wrapper.sh found" -ForegroundColor Green
+
+# Grant execute permissions to load-build.sh
+$LOAD_BUILD_PATH = Join-Path $EXTENSION_DIR "load-build.sh"
+if (Test-Path $LOAD_BUILD_PATH) {
+    icacls $LOAD_BUILD_PATH /grant Everyone:F | Out-Null
+    Write-Host "OK  load-build.sh permissions set" -ForegroundColor Green
+}
 Write-Host ""
 
 # ── 4. Detect installed browsers ─────────────────────────────────────────────
