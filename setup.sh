@@ -9,7 +9,19 @@ NATIVE_HOST_PATH="$EXTENSION_DIR/native-host-wrapper.sh"
 echo "🚀 Remote Deployment — Setup"
 echo ""
 
-# ── 1. Check & install sshpass ────────────────────────────────────────────────
+# ── 1. Check Homebrew (macOS only) ───────────────────────────────────────────
+if [[ "$OSTYPE" == "darwin"* ]]; then
+    if command -v brew &> /dev/null; then
+        echo "✅ Homebrew found"
+    else
+        echo "❌ Homebrew is not installed — required on macOS to install sshpass."
+        echo "   Install it from: https://brew.sh/"
+        echo "   Then re-run this script."
+        exit 1
+    fi
+fi
+
+# ── 2. Check & install sshpass ────────────────────────────────────────────────
 if command -v sshpass &> /dev/null; then
     echo "✅ sshpass already installed"
 else
@@ -32,15 +44,35 @@ else
     fi
 fi
 
-# ── 2. Check Python 3 ─────────────────────────────────────────────────────────
-if command -v python3 &> /dev/null; then
-    echo "✅ Python found: $(python3 --version)"
+# ── 3. Check npm / Node.js ───────────────────────────────────────────────────
+if command -v npm &> /dev/null; then
+    echo "✅ npm found: $(npm --version)"
 else
-    echo "❌ python3 not found. Please install Python 3 and re-run this script."
+    echo "❌ npm / Node.js is not installed or not on PATH."
+    echo "   Download Node.js (includes npm) from: https://nodejs.org/"
+    echo "   Then re-run this script."
     exit 1
 fi
 
-# ── 3. Make scripts executable ───────────────────────────────────────────────
+# ── 4. Check Python 3 ─────────────────────────────────────────────────────────
+if command -v python3 &> /dev/null; then
+    echo "✅ Python found: $(python3 --version)"
+else
+    echo "❌ Python 3 is not installed or not on PATH."
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        echo "   Install it via Homebrew:  brew install python3"
+        echo "   Or download from:         https://www.python.org/"
+    else
+        echo "   Install it via your package manager, e.g.:"
+        echo "     sudo apt install python3   (Debian/Ubuntu)"
+        echo "     sudo dnf install python3   (Fedora/RHEL)"
+        echo "   Or download from: https://www.python.org/"
+    fi
+    echo "   Then re-run this script."
+    exit 1
+fi
+
+# ── 5. Make scripts executable ───────────────────────────────────────────────
 if [ ! -f "$NATIVE_HOST_PATH" ]; then
     echo "❌ Error: native-host-wrapper.sh not found at $NATIVE_HOST_PATH"
     exit 1
@@ -50,7 +82,7 @@ chmod 777 "$EXTENSION_DIR/native-host.py"
 chmod 777 "$EXTENSION_DIR/load-build.sh"
 echo "✅ native-host-wrapper.sh, native-host.py and load-build.sh are executable"
 
-# ── 4. Detect installed browsers ─────────────────────────────────────────────
+# ── 6. Detect installed browsers ─────────────────────────────────────────────
 HAS_CHROME=false
 HAS_FIREFOX=false
 
@@ -74,7 +106,7 @@ $HAS_CHROME && echo "🌐 Chrome/Edge detected"
 $HAS_FIREFOX && echo "🦊 Firefox detected"
 echo ""
 
-# ── 5. Setup Chrome/Edge ──────────────────────────────────────────────────────
+# ── 7. Setup Chrome/Edge ──────────────────────────────────────────────────────
 if $HAS_CHROME; then
     echo "── Setting up Chrome/Edge ──────────────────────────────────────"
 
@@ -119,7 +151,7 @@ EOF
     echo ""
 fi
 
-# ── 6. Setup Firefox ──────────────────────────────────────────────────────────
+# ── 8. Setup Firefox ──────────────────────────────────────────────────────────
 if $HAS_FIREFOX; then
     echo "── Setting up Firefox ──────────────────────────────────────────"
 
@@ -158,7 +190,7 @@ EOF
     echo ""
 fi
 
-# ── Done ──────────────────────────────────────────────────────────────────────
+# ── Done ─────────────────────────────────────────────────────────────────────
 echo "✅ Setup complete!"
 $HAS_CHROME && echo "   Chrome: restart the browser if it was already open"
 $HAS_FIREFOX && echo "   Firefox: accept the install prompt that just opened"

@@ -9,7 +9,18 @@ $NATIVE_HOST_PATH = Join-Path $EXTENSION_DIR "native-host-wrapper.sh"
 Write-Host "Remote Deployment - Setup" -ForegroundColor Cyan
 Write-Host ""
 
-# ── 1. Check Python 3 ─────────────────────────────────────────────────────────
+# ── 1. Check npm / Node.js ───────────────────────────────────────────────────
+Write-Host "Checking for npm / Node.js..."
+if (Get-Command npm -ErrorAction SilentlyContinue) {
+    Write-Host "OK  npm found: $(npm --version)" -ForegroundColor Green
+} else {
+    Write-Host "ERROR  npm / Node.js is not installed or not on PATH." -ForegroundColor Red
+    Write-Host "       Download Node.js (includes npm) from: https://nodejs.org/"
+    Write-Host "       Tick 'Add to PATH' during install, then re-run this script."
+    exit 1
+}
+
+# ── 2. Check Python 3 ─────────────────────────────────────────────────────────
 Write-Host "Checking for Python 3..."
 try {
     $pyVersion = python --version 2>&1
@@ -21,10 +32,11 @@ try {
 } catch {
     Write-Host "ERROR  Python 3 is not installed or not on PATH." -ForegroundColor Red
     Write-Host "       Download it from https://www.python.org/ and tick 'Add to PATH'."
+    Write-Host "       Then re-run this script."
     exit 1
 }
 
-# ── 2. Check / install sshpass via winget ─────────────────────────────────────
+# ── 3. Check / install sshpass via winget ─────────────────────────────────────
 Write-Host "Checking for sshpass..."
 if (Get-Command sshpass -ErrorAction SilentlyContinue) {
     Write-Host "OK  sshpass already installed" -ForegroundColor Green
@@ -39,7 +51,7 @@ if (Get-Command sshpass -ErrorAction SilentlyContinue) {
     }
 }
 
-# ── 3. Check native-host.py exists ────────────────────────────────────────────
+# ── 4. Check native-host.py exists ────────────────────────────────────────────
 if (-not (Test-Path $NATIVE_HOST_PATH)) {
     Write-Host "ERROR  native-host-wrapper.sh not found at: $NATIVE_HOST_PATH" -ForegroundColor Red
     exit 1
@@ -54,7 +66,7 @@ if (Test-Path $LOAD_BUILD_PATH) {
 }
 Write-Host ""
 
-# ── 4. Detect installed browsers ─────────────────────────────────────────────
+# ── 5. Detect installed browsers ─────────────────────────────────────────────
 $HAS_CHROME = (Test-Path "$env:PROGRAMFILES\Google\Chrome\Application\chrome.exe") -or
               (Test-Path "$env:LOCALAPPDATA\Google\Chrome\Application\chrome.exe")
 $HAS_FIREFOX = (Test-Path "$env:PROGRAMFILES\Mozilla Firefox\firefox.exe") -or
@@ -70,7 +82,7 @@ if ($HAS_CHROME)  { Write-Host "Chrome/Edge detected" -ForegroundColor Green }
 if ($HAS_FIREFOX) { Write-Host "Firefox detected" -ForegroundColor Green }
 Write-Host ""
 
-# ── 5. Setup Chrome/Edge ──────────────────────────────────────────────────────
+# ── 6. Setup Chrome/Edge ──────────────────────────────────────────────────────
 if ($HAS_CHROME) {
     Write-Host "-- Setting up Chrome/Edge --" -ForegroundColor Cyan
 
@@ -106,7 +118,7 @@ if ($HAS_CHROME) {
     Write-Host ""
 }
 
-# ── 6. Setup Firefox ──────────────────────────────────────────────────────────
+# ── 7. Setup Firefox ──────────────────────────────────────────────────────────
 if ($HAS_FIREFOX) {
     Write-Host "-- Setting up Firefox --" -ForegroundColor Cyan
 
