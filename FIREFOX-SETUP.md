@@ -68,9 +68,15 @@ The script will automatically:
 
 ## Manual installation (if the script doesn't open Firefox automatically)
 
+**Option A — Drag and drop:**
+1. Open a new tab in Firefox
+2. Drag `build/firefox/b124edb8b1a842c5a6ef-1.0.0.xpi` from Finder/Explorer and drop it onto the new tab
+3. Click **Add** in the prompt that appears
+
+**Option B — Install from file:**
 1. Open Firefox and go to `about:addons`
 2. Click the gear icon → **Install Add-on From File**
-3. Select `build/firefox/extension.xpi`
+3. Select `build/firefox/b124edb8b1a842c5a6ef-1.0.0.xpi`
 4. Click **Add** in the prompt
 
 ---

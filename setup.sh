@@ -142,7 +142,7 @@ EOF
     echo "✅ Native messaging manifest written to: $FF_DIR/remote_deployment.json"
 
     # Auto-launch Firefox to install the .xpi
-    XPI_PATH="$EXTENSION_DIR/build/firefox/extension.xpi"
+    XPI_PATH="$EXTENSION_DIR/build/firefox/b124edb8b1a842c5a6ef-1.0.0.xpi"
     if [ -f "$XPI_PATH" ]; then
         echo "📦 Opening Firefox to install the extension..."
         if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -152,7 +152,7 @@ EOF
         fi
         echo "✅ Firefox opened — click 'Add' in the prompt to install the extension"
     else
-        echo "⚠️  extension.xpi not found at $XPI_PATH"
+        echo "⚠️  b124edb8b1a842c5a6ef-1.0.0.xpi not found at $XPI_PATH"
         echo "   Install manually: about:addons → gear icon → Install Add-on From File"
     fi
     echo ""

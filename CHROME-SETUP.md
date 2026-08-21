@@ -14,17 +14,15 @@
 
 ## macOS / Linux
 
-### Step 1 — Load the extension in Chrome and copy the Extension ID
-
-Chrome needs a unique ID before native messaging can be registered.
+### Step 1 — Load the extension in Chrome
 
 1. Open Chrome and go to `chrome://extensions/`
 2. Turn on **Developer mode** (toggle in the top-right corner)
 3. Click **"Load unpacked"** → select the `build/chrome/` folder
 
-   > Alternatively, drag and drop `build/chrome/chrome-extension.zip` onto the `chrome://extensions/` page.
+   > Alternatively, drag and drop `build/chrome/chrome-extension.zip` onto the `chrome://extensions/` page (managed Chrome only).
 
-4. Find the **Remote Deployment** card and copy the **Extension ID** shown underneath it (a long string like `abcdefghijklmnopqrstuvwxyz123456`)
+4. Find the **Remote Deployment** card and copy the **Extension ID** shown underneath it
 
 ### Step 2 — Run the setup script
 
@@ -39,12 +37,10 @@ The script will automatically:
 - Check that Python 3 is installed
 - Make `native-host.py` executable
 - Create the native messaging manifests for Chrome and Edge
-- **Pause and ask you to paste the Extension ID** — paste the ID you copied in Step 1 and press Enter
-- Automatically write the ID into both manifests (no file editing needed)
 
 ### Step 3 — Restart Chrome
 
-Close and reopen Chrome so it picks up the updated manifest.
+Close and reopen Chrome so it picks up the native messaging manifest.
 
 ### Step 4 — Open the side panel and deploy
 
@@ -56,13 +52,13 @@ Close and reopen Chrome so it picks up the updated manifest.
 
 ## Windows
 
-### Step 1 — Load the extension in Chrome and copy the Extension ID
+### Step 1 — Load the extension in Chrome
 
 1. Open Chrome and go to `chrome://extensions/`
 2. Turn on **Developer mode** (toggle in the top-right corner)
 3. Click **"Load unpacked"** → select the `build\chrome\` folder
 
-   > Alternatively, drag and drop `build\chrome\chrome-extension.zip` onto the `chrome://extensions/` page.
+   > Alternatively, drag and drop `build\chrome\chrome-extension.zip` onto the `chrome://extensions/` page (managed Chrome only).
 
 4. Copy the **Extension ID** shown on the extension card
 
@@ -83,12 +79,10 @@ The script will automatically:
 - Check that Python 3 is installed
 - Try to install `sshpass` via `winget`
 - Create native messaging manifests for Chrome and Edge
-- **Pause and ask you to paste the Extension ID** — paste the ID you copied in Step 1 and press Enter
-- Automatically write the ID into both manifests (no file editing needed)
 
 ### Step 3 — Restart Chrome
 
-Close and reopen Chrome so it picks up the updated manifest.
+Close and reopen Chrome so it picks up the native messaging manifest.
 
 ### Step 4 — Open the side panel and deploy
 

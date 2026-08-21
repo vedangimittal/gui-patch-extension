@@ -49,7 +49,7 @@ The script will:
 - Install `sshpass` and verify Python 3
 - Register the native messaging host for Chrome/Edge and/or Firefox
 - **Firefox:** automatically open the `.xpi` install prompt — just click **Add**
-- **Chrome/Edge:** prompt you to paste the Extension ID (see [CHROME-SETUP.md](CHROME-SETUP.md))
+- **Chrome/Edge:** print instructions to load the extension via "Load unpacked"
 
 For detailed per-browser instructions see:
 - [CHROME-SETUP.md](CHROME-SETUP.md)

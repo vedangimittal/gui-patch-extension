@@ -125,7 +125,7 @@ if ($HAS_FIREFOX) {
     Write-Host "OK  Manifest written to: $FF_MANIFEST_DEST" -ForegroundColor Green
 
     # Auto-launch Firefox to install the .xpi
-    $XPI_PATH = Join-Path $EXTENSION_DIR "build\firefox\extension.xpi"
+    $XPI_PATH = Join-Path $EXTENSION_DIR "build\firefox\b124edb8b1a842c5a6ef-1.0.0.xpi"
     if (Test-Path $XPI_PATH) {
         Write-Host "Opening Firefox to install the extension..."
         if (Test-Path "$env:PROGRAMFILES\Mozilla Firefox\firefox.exe") {
@@ -135,7 +135,7 @@ if ($HAS_FIREFOX) {
         }
         Write-Host "OK  Firefox opened - click 'Add' in the prompt to install the extension" -ForegroundColor Green
     } else {
-        Write-Host "WARN  extension.xpi not found at: $XPI_PATH" -ForegroundColor Yellow
+        Write-Host "WARN  b124edb8b1a842c5a6ef-1.0.0.xpi not found at: $XPI_PATH" -ForegroundColor Yellow
         Write-Host "      Install manually: about:addons -> gear icon -> Install Add-on From File"
     }
     Write-Host ""
