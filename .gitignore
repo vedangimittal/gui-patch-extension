@@ -20,10 +20,6 @@ Thumbs.db
 *.tmp
 *~
 
-# Extension packaging
-*.xpi
-*.zip
-
 # Sensitive data
 *.pem
 *.key

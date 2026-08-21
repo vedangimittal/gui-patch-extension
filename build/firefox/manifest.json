@@ -3,9 +3,13 @@
   "name": "Remote Deployment Tool",
   "version": "1.0.0",
   "description": "Firefox extension to deploy builds to remote machines",
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
-      "id": "remote-deployment@example.com"
+      "id": "remote-deployment@example.com",
+      "data_collection_permissions": {
+        "required": ["none"],
+        "optional": []
+      }
     }
   },
   "icons": {
